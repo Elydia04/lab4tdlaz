@@ -31,7 +31,7 @@ export default function Developers() {
       <PageHeader
         eyebrow="The team"
         title="Developers"
-        description="The people behind TaskNest, plus a live developer profile loaded from the DummyJSON API."
+        description="The people behind TDLAZ, plus a live developer profile loaded from the DummyJSON API."
       />
 
       <section>
@@ -47,7 +47,7 @@ export default function Developers() {
               className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
             >
               <div className="flex items-center gap-3">
-                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-gradient-to-br from-indigo-500 to-fuchsia-500 text-sm font-bold text-white">
+                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-indigo-100 text-sm font-bold text-indigo-700 ring-1 ring-inset ring-indigo-200">
                   {getInitials(member.name)}
                 </span>
                 <div className="min-w-0">

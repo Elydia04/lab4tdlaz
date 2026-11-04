@@ -5,6 +5,7 @@ import {
   IconBook,
   IconCode,
   IconFolder,
+  IconList,
   IconUsers,
 } from '../components/Icons'
 
@@ -36,6 +37,12 @@ function CodeBlock({ children }) {
 
 const quickLinks = [
   {
+    to: '/tasks',
+    label: 'To-Do List',
+    description: 'Add, complete, and delete everyday tasks with no group.',
+    icon: IconList,
+  },
+  {
     to: '/groups',
     label: 'Task Groups',
     description: 'Create categories and open a group to manage its tasks.',
@@ -61,7 +68,7 @@ export default function Guide() {
       <PageHeader
         eyebrow="Instructions"
         title="User guide"
-        description="A quick walkthrough of every feature in TaskNest — groups, tasks, navigation, the DummyJSON API, and Zustand."
+        description="A quick walkthrough of every feature in TDLAZ — groups, tasks, navigation, the DummyJSON API, and Zustand."
       />
 
       <div className="space-y-4">
@@ -84,16 +91,27 @@ export default function Guide() {
           </p>
         </Step>
 
-        <Step step={2} title="Add a task to a selected group">
+        <Step step={2} title="Add a to-do or a group task">
           <p>
-            On the Task Groups page, click <strong>Open</strong> on a group card
-            (or open the group link directly). Type the task in the input at the
-            top of the group page and click <strong>Add Task</strong>.
+            For everyday tasks that do not belong to a category, open the{' '}
+            <Link
+              to="/tasks"
+              className="font-medium text-indigo-600 hover:underline"
+            >
+              To-Do List
+            </Link>{' '}
+            page, type in the input, and click <strong>Add to-do</strong>. These
+            tasks are not tied to any group and never show a group badge.
           </p>
           <p>
-            The task is stored with that group's ID, so it only appears inside
-            the group you chose. New tasks start with the status{' '}
-            <strong>Not done</strong>.
+            Already added a to-do? Click the folder icon on it and pick a group.
+            It moves out of the to-do list and becomes a task inside that group.
+          </p>
+          <p>
+            For a categorized task, open the Task Groups page and click{' '}
+            <strong>Open</strong> on a group card. Type the task at the top of the
+            group page and click <strong>Add Task</strong>. It is stored with that
+            group's ID, so it only appears inside the group you chose.
           </p>
         </Step>
 
@@ -112,22 +130,25 @@ export default function Guide() {
 
         <Step step={4} title="Delete a task or clear tasks">
           <p>
-            Hover a task and click the trash icon on the right to delete it. On a
-            group page you can also use <strong>Clear completed</strong> to remove
-            every finished task in that group.
+            Hover a task and click the trash icon on the right to delete it. If the
+            task is not marked as done yet, a confirmation box appears first so you
+            don't remove something you still need to finish. Done tasks are deleted
+            straight away.
           </p>
           <p>
-            On the dashboard, <strong>Clear completed tasks</strong> removes done
-            tasks from every group, and <strong>Reset sample data</strong> puts
-            the demo groups and tasks back.
+            On the To-Do List page you can also use{' '}
+            <strong>Clear completed</strong> to remove finished to-dos, or{' '}
+            <strong>Clear all</strong> to empty the whole list (it asks first). On
+            a group page, <strong>Clear completed</strong> removes every finished
+            task in that group.
           </p>
         </Step>
 
         <Step step={5} title="Move between pages and groups">
           <p>
-            Use the navigation bar to switch between Dashboard, Task Groups, User
-            Guide, Users, and Developers. On mobile, tap the menu button to open
-            the same links.
+            Use the navigation bar to switch between Dashboard, To-Do List, Task
+            Groups, User Guide, Users, and Developers. On mobile, tap the menu
+            button to open the same links.
           </p>
           <p>
             From a group page, the <strong>All task groups</strong> link returns
@@ -184,12 +205,14 @@ const addTask = useTodoStore((state) => state.addTask)`}</CodeBlock>
             keeps your data.
           </p>
           <CodeBlock>{`persist(storeDefinition, {
-  name: 'tasknest-store',
+  name: 'tdlaz-store',
   partialize: (state) => ({ groups: state.groups, tasks: state.tasks }),
 })`}</CodeBlock>
           <p>
-            Use <strong>Reset sample data</strong> on the dashboard whenever you
-            want a clean start.
+            The dashboard is a combined overview of everything, so you can tick
+            tasks off or delete them there too. Adding new tasks still happens on
+            the To-Do List page or a group page. Clearing this site's browser
+            storage restores the sample data whenever you want a clean start.
           </p>
         </Step>
       </div>
@@ -199,7 +222,7 @@ const addTask = useTodoStore((state) => state.addTask)`}</CodeBlock>
           <IconBook className="h-5 w-5" />
           <h2 className="font-semibold">Where to go next</h2>
         </div>
-        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {quickLinks.map(({ to, label, description, icon: Icon }) => (
             <Link
               key={to}

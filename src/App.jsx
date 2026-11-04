@@ -7,6 +7,7 @@ import GroupDetail from './pages/GroupDetail'
 import Groups from './pages/Groups'
 import Guide from './pages/Guide'
 import NotFound from './pages/NotFound'
+import TodoList from './pages/TodoList'
 import Users from './pages/Users'
 
 function ScrollToTop() {
@@ -29,6 +30,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/home" element={<Navigate to="/" replace />} />
+          <Route path="/tasks" element={<TodoList />} />
           <Route path="/groups" element={<Groups />} />
           <Route path="/groups/:groupId" element={<GroupDetail />} />
           <Route path="/guide" element={<Guide />} />
@@ -40,7 +42,7 @@ export default function App() {
 
       <footer className="border-t border-slate-200 bg-white">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 py-6 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-          <p>© {new Date().getFullYear()} TaskNest — To-Do List project.</p>
+          <p>© {new Date().getFullYear()} TDLAZ — To-Do List project.</p>
           <p className="text-xs text-slate-400">
             React · Tailwind CSS · Zustand · Axios · React Router
           </p>

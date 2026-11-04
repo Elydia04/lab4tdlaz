@@ -2,17 +2,18 @@ import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import {
   IconBook,
-  IconCheck,
   IconClose,
   IconCode,
   IconFolder,
   IconHome,
+  IconList,
   IconMenu,
   IconUsers,
 } from './Icons'
 
 const links = [
   { to: '/', label: 'Dashboard', icon: IconHome, end: true },
+  { to: '/tasks', label: 'To-Do List', icon: IconList },
   { to: '/groups', label: 'Task Groups', icon: IconFolder },
   { to: '/guide', label: 'User Guide', icon: IconBook },
   { to: '/users', label: 'Users', icon: IconUsers },
@@ -42,21 +43,16 @@ export default function Navbar() {
         aria-label="Main navigation"
         className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8"
       >
-        <Link to="/" className="flex items-center gap-2.5">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-indigo-600 to-fuchsia-500 text-white shadow-sm">
-            <IconCheck className="h-5 w-5" strokeWidth={2.5} />
+        <Link to="/" className="leading-tight">
+          <span className="block text-lg font-bold tracking-tight text-slate-900">
+            TDLAZ
           </span>
-          <span className="leading-tight">
-            <span className="block text-sm font-bold tracking-tight text-slate-900">
-              TaskNest
-            </span>
-            <span className="block text-[11px] font-medium text-slate-500">
-              To-Do List
-            </span>
+          <span className="block text-[11px] font-medium text-slate-500">
+            To-Do List
           </span>
         </Link>
 
-        <div className="hidden items-center gap-1 md:flex">
+        <div className="hidden items-center gap-1 lg:flex">
           {links.map(({ to, label, icon: Icon, end }) => (
             <NavLink key={to} to={to} end={end} className={desktopLinkClass}>
               <Icon className="h-4 w-4" />
@@ -68,7 +64,11 @@ export default function Navbar() {
         <button
           type="button"
           onClick={() => setOpen((value) => !value)}
-          className="rounded-lg p-2 text-slate-600 transition hover:bg-slate-100 md:hidden"
+          className={`rounded-lg p-2 transition lg:hidden ${
+            open
+              ? 'text-rose-500 hover:bg-rose-50 hover:text-rose-600'
+              : 'text-slate-600 hover:bg-slate-100'
+          }`}
           aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}
         >
@@ -81,7 +81,7 @@ export default function Navbar() {
       </nav>
 
       {open && (
-        <div className="border-t border-slate-200 bg-white px-4 pb-3 pt-2 md:hidden">
+        <div className="border-t border-slate-200 bg-white px-4 pb-3 pt-2 lg:hidden">
           <div className="flex flex-col gap-1">
             {links.map(({ to, label, icon: Icon, end }) => (
               <NavLink

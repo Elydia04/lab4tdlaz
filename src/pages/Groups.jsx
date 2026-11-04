@@ -82,10 +82,10 @@ export default function Groups() {
           />
           <button
             type="submit"
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             <IconPlus className="h-4 w-4" strokeWidth={2.2} />
-            Add group
+            Add
           </button>
         </form>
 
@@ -129,7 +129,7 @@ export default function Groups() {
                   type="button"
                   onClick={() => handleDelete(group)}
                   aria-label={`Delete group: ${group.name}`}
-                  className="absolute right-3 top-3 rounded-lg p-1.5 text-slate-300 transition hover:bg-rose-50 hover:text-rose-500"
+                  className="absolute right-3 top-3 rounded-lg p-1.5 text-rose-400 transition hover:bg-rose-50 hover:text-rose-600"
                 >
                   <IconTrash className="h-4 w-4" />
                 </button>

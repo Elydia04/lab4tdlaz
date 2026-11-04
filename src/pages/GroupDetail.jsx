@@ -128,6 +128,7 @@ export default function GroupDetail() {
           <TaskForm
             onAdd={(title) => addTask(group.id, title)}
             placeholder={`What needs to be done in ${group.name}?`}
+            buttonLabel="Add"
           />
         </div>
       </section>
@@ -149,7 +150,7 @@ export default function GroupDetail() {
                 onClick={() => setFilter(key)}
                 className={`rounded-full px-3 py-1.5 text-sm font-medium transition ${
                   isActive
-                    ? 'bg-slate-900 text-white shadow-sm'
+                    ? 'bg-indigo-600 text-white shadow-sm'
                     : 'bg-white text-slate-600 ring-1 ring-inset ring-slate-200 hover:bg-slate-50'
                 }`}
               >

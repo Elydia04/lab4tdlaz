@@ -3,86 +3,92 @@ import ErrorState from '../components/ErrorState'
 import LoadingState from '../components/LoadingState'
 import StatCard from '../components/StatCard'
 import TaskItem from '../components/TaskItem'
+import TodoItem from '../components/TodoItem'
+import UserAvatar from '../components/UserAvatar'
 import {
   IconArrowRight,
-  IconBook,
   IconCheckCircle,
   IconClock,
   IconFolder,
   IconList,
-  IconRefresh,
-  IconTrash,
 } from '../components/Icons'
 import { useUser } from '../hooks/useDummyUsers'
 import { getFullName } from '../lib/format'
 import { useTodoStore } from '../store/useTodoStore'
-import UserAvatar from '../components/UserAvatar'
 
 export default function Dashboard() {
   const groups = useTodoStore((state) => state.groups)
   const tasks = useTodoStore((state) => state.tasks)
-  const clearCompleted = useTodoStore((state) => state.clearCompleted)
-  const resetAll = useTodoStore((state) => state.resetAll)
+  const todos = useTodoStore((state) => state.todos)
   const { user, loading, error, reload } = useUser(1)
 
-  const total = tasks.length
-  const completed = tasks.filter((task) => task.done).length
+  const total = tasks.length + todos.length
+  const completed =
+    tasks.filter((task) => task.done).length +
+    todos.filter((todo) => todo.done).length
   const pending = total - completed
   const completion = total === 0 ? 0 : Math.round((completed / total) * 100)
-  const recentTasks = [...tasks]
-    .sort((a, b) => b.createdAt - a.createdAt)
-    .slice(0, 5)
 
-  const getGroup = (groupId) => groups.find((group) => group.id === groupId)
+  const groupById = new Map(groups.map((group) => [group.id, group]))
 
-  function handleReset() {
-    const confirmed = window.confirm(
-      'Reset every group and task back to the sample data? This cannot be undone.',
-    )
-    if (confirmed) resetAll()
-  }
+  // Everything in one list: standalone to-dos (no group) and group tasks
+  // (with the group name shown as a badge).
+  const overview = [
+    ...todos.map((todo) => ({
+      key: `todo-${todo.id}`,
+      type: 'todo',
+      createdAt: todo.createdAt,
+      todo,
+    })),
+    ...tasks.map((task) => ({
+      key: `task-${task.id}`,
+      type: 'task',
+      createdAt: task.createdAt,
+      task,
+      group: groupById.get(task.groupId),
+    })),
+  ].sort((a, b) => b.createdAt - a.createdAt)
 
   return (
     <div>
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-500 px-6 py-10 text-white shadow-xl shadow-indigo-600/20 sm:px-10">
-        <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-white/10 blur-2xl" />
-        <div className="pointer-events-none absolute -bottom-24 left-1/3 h-64 w-64 rounded-full bg-fuchsia-300/20 blur-3xl" />
+      <section className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-9">
+        <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-indigo-50 blur-2xl" />
 
         <div className="relative">
-          <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-white/90 ring-1 ring-inset ring-white/20">
-            TaskNest dashboard
+          <span className="inline-flex items-center gap-2 rounded-full bg-indigo-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-indigo-700 ring-1 ring-inset ring-indigo-100">
+            TDLAZ dashboard
           </span>
-          <h1 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
+          <h1 className="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
             Welcome back 👋
           </h1>
-          <p className="mt-3 max-w-xl text-sm leading-6 text-white/80 sm:text-base">
-            Keep your school work, personal errands, and projects in one place.
-            Add tasks, tick them off, and switch between groups whenever you
-            need a different view.
+          <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600 sm:text-base">
+            One overview of everything on your list — your to-dos and all of your
+            group tasks together. Tick them off or delete them here, and add new
+            ones from the To-Do List or Task Groups pages.
           </p>
 
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
-              to="/groups"
-              className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-indigo-700 shadow-sm transition hover:bg-indigo-50"
+              to="/tasks"
+              className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
             >
-              Open task groups
+              Open to-do list
               <IconArrowRight className="h-4 w-4" />
             </Link>
             <Link
-              to="/guide"
-              className="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-white ring-1 ring-inset ring-white/40 transition hover:bg-white/10"
+              to="/groups"
+              className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50"
             >
-              <IconBook className="h-4 w-4" />
-              Read the user guide
+              <IconFolder className="h-4 w-4" />
+              Task groups
             </Link>
           </div>
 
-          <p className="mt-6 text-sm text-white/75">
-            You have <strong className="font-semibold text-white">{pending}</strong>{' '}
+          <p className="mt-6 text-sm text-slate-500">
+            You have <strong className="font-semibold text-slate-900">{pending}</strong>{' '}
             pending task{pending === 1 ? '' : 's'} across{' '}
-            <strong className="font-semibold text-white">{groups.length}</strong>{' '}
-            group{groups.length === 1 ? '' : 's'}.
+            <strong className="font-semibold text-slate-900">{groups.length}</strong>{' '}
+            group{groups.length === 1 ? '' : 's'} and your to-do list.
           </p>
         </div>
       </section>
@@ -91,14 +97,14 @@ export default function Dashboard() {
         <StatCard
           label="Total tasks"
           value={total}
-          hint="Across every group"
+          hint="To-dos + group tasks"
           tone="indigo"
           icon={<IconList className="h-5 w-5" />}
         />
         <StatCard
           label="Completed"
           value={completed}
-          hint={`${completion}% of all tasks`}
+          hint={`${completion}% of everything`}
           tone="emerald"
           icon={<IconCheckCircle className="h-5 w-5" />}
         />
@@ -106,7 +112,7 @@ export default function Dashboard() {
           label="Pending"
           value={pending}
           hint="Still to be done"
-          tone="amber"
+          tone="slate"
           icon={<IconClock className="h-5 w-5" />}
         />
       </div>
@@ -114,44 +120,53 @@ export default function Dashboard() {
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm lg:col-span-2">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <h2 className="font-semibold text-slate-900">Recent tasks</h2>
-            <Link
-              to="/groups"
-              className="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 transition hover:text-indigo-700"
-            >
-              Manage groups
-              <IconArrowRight className="h-4 w-4" />
-            </Link>
+            <div>
+              <h2 className="font-semibold text-slate-900">All tasks</h2>
+              <p className="mt-0.5 text-xs text-slate-400">
+                Tick tasks off or delete them here. Group tasks show their group.
+              </p>
+            </div>
+            <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">
+              {total} task{total === 1 ? '' : 's'}
+            </span>
           </div>
 
-          {recentTasks.length === 0 ? (
-            <div className="mt-4 rounded-xl border border-dashed border-slate-300 bg-slate-50 p-6 text-center">
-              <p className="text-sm text-slate-500">
-                No tasks yet. Open a group and add your first task.
-              </p>
-              <Link
-                to="/groups"
-                className="mt-3 inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700"
-              >
-                <IconFolder className="h-4 w-4" />
-                Go to task groups
-              </Link>
-            </div>
-          ) : (
-            <ul className="mt-4 space-y-2">
-              {recentTasks.map((task) => {
-                const group = getGroup(task.groupId)
-                return (
-                  <TaskItem
-                    key={task.id}
-                    task={task}
-                    groupName={group?.name}
-                    groupAccent={group?.accent}
-                  />
-                )
-              })}
-            </ul>
-          )}
+          <div className="mt-4">
+            {overview.length === 0 ? (
+              <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-6 text-center text-sm text-slate-500">
+                Nothing here yet. Add to-dos on the{' '}
+                <Link
+                  to="/tasks"
+                  className="font-medium text-indigo-600 hover:underline"
+                >
+                  To-Do List
+                </Link>{' '}
+                page or tasks inside a{' '}
+                <Link
+                  to="/groups"
+                  className="font-medium text-indigo-600 hover:underline"
+                >
+                  task group
+                </Link>
+                .
+              </div>
+            ) : (
+              <ul className="space-y-2">
+                {overview.map((item) =>
+                  item.type === 'todo' ? (
+                    <TodoItem key={item.key} todo={item.todo} />
+                  ) : (
+                    <TaskItem
+                      key={item.key}
+                      task={item.task}
+                      groupName={item.group?.name}
+                      groupAccent={item.group?.accent}
+                    />
+                  ),
+                )}
+              </ul>
+            )}
+          </div>
         </section>
 
         <div className="space-y-6">
@@ -206,29 +221,27 @@ export default function Dashboard() {
           </section>
 
           <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 className="font-semibold text-slate-900">Quick actions</h2>
+            <h2 className="font-semibold text-slate-900">Manage your tasks</h2>
             <p className="mt-1 text-xs text-slate-400">
-              Changes are saved in your browser automatically.
+              Add new tasks on the pages below. You can tick off and delete tasks
+              straight from the list.
             </p>
 
             <div className="mt-4 space-y-2">
-              <button
-                type="button"
-                onClick={() => clearCompleted()}
-                disabled={completed === 0}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+              <Link
+                to="/tasks"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
               >
-                <IconRefresh className="h-4 w-4" />
-                Clear completed tasks
-              </button>
-              <button
-                type="button"
-                onClick={handleReset}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-sm font-medium text-rose-700 transition hover:bg-rose-100"
+                <IconList className="h-4 w-4" />
+                To-Do List
+              </Link>
+              <Link
+                to="/groups"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
               >
-                <IconTrash className="h-4 w-4" />
-                Reset sample data
-              </button>
+                <IconFolder className="h-4 w-4" />
+                Task Groups
+              </Link>
             </div>
           </section>
         </div>

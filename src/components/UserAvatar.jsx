@@ -23,7 +23,7 @@ export default function UserAvatar({ user, size = 'md' }) {
       <span
         role="img"
         aria-label={name}
-        className={`grid shrink-0 place-items-center rounded-full bg-gradient-to-br from-indigo-500 to-fuchsia-500 font-bold text-white ${sizeClass}`}
+        className={`grid shrink-0 place-items-center rounded-full bg-indigo-100 font-bold text-indigo-700 ring-1 ring-inset ring-indigo-200 ${sizeClass}`}
       >
         {getInitials(name)}
       </span>

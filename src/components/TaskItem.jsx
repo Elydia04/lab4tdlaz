@@ -7,6 +7,16 @@ export default function TaskItem({ task, groupName, groupAccent }) {
   const deleteTask = useTodoStore((state) => state.deleteTask)
   const accent = getGroupAccent(groupAccent)
 
+  function handleDelete() {
+    if (!task.done) {
+      const confirmed = window.confirm(
+        `"${task.title}" is not marked as done yet. Delete it anyway?`,
+      )
+      if (!confirmed) return
+    }
+    deleteTask(task.id)
+  }
+
   return (
     <li className="group flex items-start gap-3 rounded-xl border border-slate-200 bg-white p-3.5 transition hover:border-slate-300 hover:shadow-sm">
       <button
@@ -36,7 +46,7 @@ export default function TaskItem({ task, groupName, groupAccent }) {
             className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium ring-1 ring-inset ${
               task.done
                 ? 'bg-emerald-50 text-emerald-700 ring-emerald-200'
-                : 'bg-amber-50 text-amber-700 ring-amber-200'
+                : 'bg-slate-100 text-slate-600 ring-slate-200'
             }`}
           >
             {task.done ? 'Done' : 'Not done'}
@@ -52,9 +62,9 @@ export default function TaskItem({ task, groupName, groupAccent }) {
 
       <button
         type="button"
-        onClick={() => deleteTask(task.id)}
+        onClick={handleDelete}
         aria-label={`Delete task: ${task.title}`}
-        className="rounded-lg p-1.5 text-slate-400 transition hover:bg-rose-50 hover:text-rose-600 sm:opacity-0 sm:group-hover:opacity-100 sm:focus-visible:opacity-100"
+        className="rounded-lg p-1.5 text-rose-500 transition hover:bg-rose-50 hover:text-rose-600 sm:opacity-0 sm:group-hover:opacity-100 sm:focus-visible:opacity-100"
       >
         <IconTrash className="h-4 w-4" />
       </button>

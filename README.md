@@ -1,4 +1,4 @@
-# TaskNest — React To-Do List
+# TDLAZ — React To-Do List
 
 A fully functional to-do list website built with React, Tailwind CSS, Zustand,
 Axios, and React Router DOM.
@@ -6,6 +6,11 @@ Axios, and React Router DOM.
 ## Features
 
 - Add, complete, and delete tasks
+- A separate **To-Do List** page for simple tasks that are not tied to any group
+- The dashboard shows one combined list of your to-dos and group tasks, where you can tick them off or delete them
+- Group tasks show a group badge on the dashboard; standalone to-dos do not
+- Move a standalone to-do into a group with the folder button on each to-do
+- Clear completed to-dos, or clear the whole to-do list (with confirmation)
 - Tasks can be marked **Done** or **Not Done**
 - Task groups / categories (School Activities, Personal Tasks, Projects, Daily Tasks)
 - Dashboard with total, completed, and pending task counts
@@ -14,7 +19,7 @@ Axios, and React Router DOM.
   [DummyJSON API](https://dummyjson.com/)
 - Loading indicators and error handling for API requests
 - Responsive layout with a mobile navigation menu
-- Tasks and groups are saved to `localStorage`, so they survive a refresh
+- Tasks, to-dos, and groups are saved to `localStorage`, so they survive a refresh
 
 ## Tech stack
 
@@ -31,6 +36,7 @@ Axios, and React Router DOM.
 | Route | Page |
 | --- | --- |
 | `/` (and `/home`) | Home / Dashboard |
+| `/tasks` | To-Do List (no groups) |
 | `/groups` | Task Groups / Categories |
 | `/groups/:groupId` | Task list for a selected group |
 | `/guide` | Instructions / User Guide |
@@ -69,9 +75,10 @@ src/
 
 ## Data persistence
 
-The Zustand store uses the `persist` middleware and saves `groups` and `tasks`
-under the `tasknest-store` key in `localStorage`. Refreshing the page keeps the
-data. Use **Reset sample data** on the dashboard to restore the demo content.
+The Zustand store uses the `persist` middleware and saves `groups`, `tasks`, and
+`todos` under the `tdlaz-store` key in `localStorage`. Refreshing the page keeps the
+data. Clearing this site's browser storage restores the demo content, and the
+seed data is defined in `src/store/useTodoStore.js`.
 
 ## Deploying with working page refreshes
 
