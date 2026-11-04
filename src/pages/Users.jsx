@@ -7,6 +7,7 @@ import PageHeader from '../components/PageHeader'
 import UserCard from '../components/UserCard'
 import {
   IconArrowRight,
+  IconBook,
   IconRefresh,
   IconSearch,
   IconUsers,
@@ -133,13 +134,22 @@ export default function Users() {
             dummyjson.com/users
           </a>
         </p>
-        <Link
-          to="/developers"
-          className="inline-flex items-center gap-1 font-medium text-indigo-600 transition hover:text-indigo-700"
-        >
-          Meet the developers
-          <IconArrowRight className="h-4 w-4" />
-        </Link>
+        <div className="flex flex-wrap items-center gap-4">
+          <Link
+            to="/guide"
+            className="inline-flex items-center gap-1 font-medium text-indigo-600 transition hover:text-indigo-700"
+          >
+            <IconBook className="h-4 w-4" />
+            Read the user guide
+          </Link>
+          <Link
+            to="/developers"
+            className="inline-flex items-center gap-1 font-medium text-indigo-600 transition hover:text-indigo-700"
+          >
+            Meet the developers
+            <IconArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
       </div>
     </div>
   )

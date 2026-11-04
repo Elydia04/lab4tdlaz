@@ -27,37 +27,29 @@ function Step({ step, title, children }) {
   )
 }
 
-function CodeBlock({ children }) {
-  return (
-    <pre className="overflow-x-auto rounded-xl bg-slate-900 p-4 text-xs leading-6 text-slate-100">
-      <code>{children}</code>
-    </pre>
-  )
-}
-
 const quickLinks = [
   {
     to: '/tasks',
     label: 'To-Do List',
-    description: 'Add, complete, and delete everyday tasks with no group.',
+    description: 'Everyday tasks that are not tied to a group.',
     icon: IconList,
   },
   {
     to: '/groups',
     label: 'Task Groups',
-    description: 'Create categories and open a group to manage its tasks.',
+    description: 'Organize tasks into categories you choose.',
     icon: IconFolder,
   },
   {
     to: '/users',
     label: 'User Information',
-    description: 'Browse sample users loaded from the DummyJSON API.',
+    description: 'Browse sample user profiles.',
     icon: IconUsers,
   },
   {
     to: '/developers',
     label: 'Developers',
-    description: 'See the group members and the API-powered profile.',
+    description: 'Meet the team behind TDLAZ.',
     icon: IconCode,
   },
 ]
@@ -68,11 +60,56 @@ export default function Guide() {
       <PageHeader
         eyebrow="Instructions"
         title="User guide"
-        description="A quick walkthrough of every feature in TDLAZ — groups, tasks, navigation, the DummyJSON API, and Zustand."
+        description="Everything you need to use TDLAZ — adding tasks, organizing groups, and keeping track of what is done."
       />
 
       <div className="space-y-4">
-        <Step step={1} title="Create a task group">
+        <Step step={1} title="Start on the dashboard">
+          <p>
+            The dashboard is your overview. It shows every task you have in one
+            list: your standalone to-dos and the tasks inside your groups. Group
+            tasks show a small group badge; to-dos do not.
+          </p>
+          <p>
+            From here you can add a standalone to-do, tick a task off, delete it,
+            or jump to the{' '}
+            <Link
+              to="/tasks"
+              className="font-medium text-indigo-600 hover:underline"
+            >
+              To-Do List
+            </Link>{' '}
+            and{' '}
+            <Link
+              to="/groups"
+              className="font-medium text-indigo-600 hover:underline"
+            >
+              Task Groups
+            </Link>{' '}
+            pages for the full lists.
+          </p>
+        </Step>
+
+        <Step step={2} title="Add a to-do">
+          <p>
+            Open the{' '}
+            <Link
+              to="/tasks"
+              className="font-medium text-indigo-600 hover:underline"
+            >
+              To-Do List
+            </Link>{' '}
+            page, type in the input, and click <strong>Add</strong>. These tasks
+            are not tied to any group and never show a group badge. You can also
+            add a to-do right from the dashboard.
+          </p>
+          <p>
+            Already added a to-do? Click the folder icon on it and pick a group.
+            It moves out of the to-do list and becomes a task inside that group.
+          </p>
+        </Step>
+
+        <Step step={3} title="Create a task group">
           <p>
             Open the{' '}
             <Link
@@ -81,8 +118,8 @@ export default function Guide() {
             >
               Task Groups
             </Link>{' '}
-            page. Type a name in the “Create a new group” field and click the{' '}
-            <strong>Add group</strong> button.
+            page. Type a name in the “Create a new group” field and click{' '}
+            <strong>Add group</strong>.
           </p>
           <p>
             Good examples are <em>School Activities</em>, <em>Personal Tasks</em>,{' '}
@@ -91,48 +128,35 @@ export default function Guide() {
           </p>
         </Step>
 
-        <Step step={2} title="Add a to-do or a group task">
+        <Step step={4} title="Add tasks to a group">
           <p>
-            For everyday tasks that do not belong to a category, open the{' '}
-            <Link
-              to="/tasks"
-              className="font-medium text-indigo-600 hover:underline"
-            >
-              To-Do List
-            </Link>{' '}
-            page, type in the input, and click <strong>Add to-do</strong>. These
-            tasks are not tied to any group and never show a group badge.
+            On the Task Groups page, click <strong>Open</strong> on a group card.
+            Type the task at the top of the group page and click{' '}
+            <strong>Add</strong>. The task only appears inside that group.
           </p>
           <p>
-            Already added a to-do? Click the folder icon on it and pick a group.
-            It moves out of the to-do list and becomes a task inside that group.
-          </p>
-          <p>
-            For a categorized task, open the Task Groups page and click{' '}
-            <strong>Open</strong> on a group card. Type the task at the top of the
-            group page and click <strong>Add Task</strong>. It is stored with that
-            group's ID, so it only appears inside the group you chose.
+            You can also add several groups and keep related tasks together, such
+            as school work in one group and personal errands in another.
           </p>
         </Step>
 
-        <Step step={3} title="Mark a task as Done or Not Done">
+        <Step step={5} title="Mark a task as done">
           <p>
             Click the square checkbox on the left of any task to toggle it. A
             checked task turns green, gets a strikethrough, and changes its badge
             from <strong>Not done</strong> to <strong>Done</strong>.
           </p>
           <p>
-            Click it again to return the task to <strong>Not done</strong>. The
-            dashboard counters update immediately because the data lives in the
-            shared Zustand store.
+            Click it again to return the task to <strong>Not done</strong>. You
+            can do this from the dashboard, the To-Do List, or any group page.
           </p>
         </Step>
 
-        <Step step={4} title="Delete a task or clear tasks">
+        <Step step={6} title="Delete or clear tasks">
           <p>
-            Hover a task and click the trash icon on the right to delete it. If the
-            task is not marked as done yet, a confirmation box appears first so you
-            don't remove something you still need to finish. Done tasks are deleted
+            Hover a task and click the trash icon to delete it. If the task is not
+            marked as done yet, a confirmation box appears first so you do not
+            remove something you still need to finish. Done tasks are deleted
             straight away.
           </p>
           <p>
@@ -144,75 +168,79 @@ export default function Guide() {
           </p>
         </Step>
 
-        <Step step={5} title="Move between pages and groups">
+        <Step step={7} title="Browse users and developers">
+          <p>
+            The{' '}
+            <Link
+              to="/users"
+              className="font-medium text-indigo-600 hover:underline"
+            >
+              Users
+            </Link>{' '}
+            page shows sample user profiles. Select a user to see more details.
+            While the profiles are loading, a spinner is shown. If something goes
+            wrong, a message appears with a <strong>Try again</strong> button.
+          </p>
+          <p>
+            The{' '}
+            <Link
+              to="/developers"
+              className="font-medium text-indigo-600 hover:underline"
+            >
+              Developers
+            </Link>{' '}
+            page shows the team behind TDLAZ.
+          </p>
+        </Step>
+
+        <Step step={8} title="Your tasks are saved automatically">
+          <p>
+            Anything you add, tick off, or delete is saved in your browser. You
+            can refresh the page, open a link directly, or close the tab and come
+            back later — your tasks will still be there.
+          </p>
+          <p>
+            If you clear this site's browser data, your tasks are removed and the
+            sample content comes back the next time you open the app.
+          </p>
+        </Step>
+
+        <Step step={9} title="Move around the app">
           <p>
             Use the navigation bar to switch between Dashboard, To-Do List, Task
             Groups, User Guide, Users, and Developers. On mobile, tap the menu
             button to open the same links.
           </p>
           <p>
-            From a group page, the <strong>All task groups</strong> link returns
-            you to the groups list. The route{' '}
-            <code className="rounded bg-slate-100 px-1.5 py-0.5 text-xs text-slate-700">
-              /groups/:groupId
-            </code>{' '}
-            uses a dynamic URL parameter to decide which group to display.
+            From a group page, the <strong>All task groups</strong> link takes you
+            back to the groups list.
           </p>
         </Step>
 
-        <Step step={6} title="Retrieve user information with Axios">
+        <Step step={10} title="How user information is loaded">
           <p>
-            The Users page and the dashboard user card call the DummyJSON API
-            through a shared Axios instance:
+            The Users page and the dashboard get their sample profiles from
+            DummyJSON at <em>dummyjson.com</em>, a free sample API. The app sends
+            the request with <strong>Axios</strong>.
           </p>
-          <CodeBlock>{`import axios from 'axios'
-
-const { data } = await axios.get('https://dummyjson.com/users?limit=12')
-setUsers(data.users)`}</CodeBlock>
           <p>
-            The request lives in{' '}
-            <code className="rounded bg-slate-100 px-1.5 py-0.5 text-xs text-slate-700">
-              src/api/dummyApi.js
-            </code>{' '}
-            and is wrapped in custom hooks. While the request is running, a
-            spinner is shown. If it fails, an error card appears with a{' '}
-            <strong>Try again</strong> button.
+            While the request is running, a loading spinner is shown. If the
+            request fails, a red message appears with a <strong>Try again</strong>{' '}
+            button. Open the Users page and use <strong>Refresh</strong> to send
+            the request again.
           </p>
         </Step>
 
-        <Step step={7} title="How Zustand shares task data">
+        <Step step={11} title="How task data stays in sync">
           <p>
-            All task and group data is kept in one Zustand store at{' '}
-            <code className="rounded bg-slate-100 px-1.5 py-0.5 text-xs text-slate-700">
-              src/store/useTodoStore.js
-            </code>
-            . Components read only what they need:
+            All tasks, groups, and to-dos are kept in one shared{' '}
+            <strong>Zustand</strong> store. When you add, tick, delete, or move a
+            task, the store updates and every page that uses that data re-renders.
           </p>
-          <CodeBlock>{`const tasks = useTodoStore((state) => state.tasks)
-const addTask = useTodoStore((state) => state.addTask)`}</CodeBlock>
           <p>
-            When a task is added, toggled, or deleted, every component using the
-            store re-renders with the new data. That is why the dashboard counts,
-            group cards, and group task lists always stay in sync.
-          </p>
-        </Step>
-
-        <Step step={8} title="Your data survives a refresh">
-          <p>
-            The store uses Zustand's <strong>persist</strong> middleware, which
-            saves groups and tasks to <strong>localStorage</strong>. Refreshing the
-            page, opening a route directly, or closing and reopening the browser
-            keeps your data.
-          </p>
-          <CodeBlock>{`persist(storeDefinition, {
-  name: 'tdlaz-store',
-  partialize: (state) => ({ groups: state.groups, tasks: state.tasks }),
-})`}</CodeBlock>
-          <p>
-            The dashboard is a combined overview of everything, so you can tick
-            tasks off or delete them there too. Adding new tasks still happens on
-            the To-Do List page or a group page. Clearing this site's browser
-            storage restores the sample data whenever you want a clean start.
+            That is why the dashboard counters, group cards, and task lists always
+            match. The store is also saved in your browser, so your data survives
+            a page refresh.
           </p>
         </Step>
       </div>

@@ -8,6 +8,7 @@ Axios, and React Router DOM.
 - Add, complete, and delete tasks
 - A separate **To-Do List** page for simple tasks that are not tied to any group
 - The dashboard shows one combined list of your to-dos and group tasks, where you can tick them off or delete them
+- A quick add form on the dashboard for standalone to-dos
 - Group tasks show a group badge on the dashboard; standalone to-dos do not
 - Move a standalone to-do into a group with the folder button on each to-do
 - Clear completed to-dos, or clear the whole to-do list (with confirmation)
@@ -87,6 +88,14 @@ route. This repository already includes:
 
 - `public/_redirects` for Netlify (`/* /index.html 200`)
 - `vercel.json` for Vercel (SPA rewrite)
+
+### Deploying on Vercel
+
+1. Push the repository to GitHub.
+2. In Vercel, choose **Add New → Project** and import the repository.
+3. Framework preset: **Vite**. Build command: `npm run build`. Output directory: `dist`.
+4. Deploy. `vercel.json` makes direct visits and refreshes on routes such as
+   `/groups/personal`, `/users`, and `/developers` load the app correctly.
 
 For another static host, configure the same "rewrite all paths to
 `/index.html`" rule. GitHub Pages needs a `404.html` copy of `index.html`.

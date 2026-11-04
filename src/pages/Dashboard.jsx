@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import ErrorState from '../components/ErrorState'
 import LoadingState from '../components/LoadingState'
 import StatCard from '../components/StatCard'
+import TaskForm from '../components/TaskForm'
 import TaskItem from '../components/TaskItem'
 import TodoItem from '../components/TodoItem'
 import UserAvatar from '../components/UserAvatar'
@@ -20,6 +21,7 @@ export default function Dashboard() {
   const groups = useTodoStore((state) => state.groups)
   const tasks = useTodoStore((state) => state.tasks)
   const todos = useTodoStore((state) => state.todos)
+  const addTodo = useTodoStore((state) => state.addTodo)
   const { user, loading, error, reload } = useUser(1)
 
   const total = tasks.length + todos.length
@@ -59,12 +61,12 @@ export default function Dashboard() {
             TDLAZ dashboard
           </span>
           <h1 className="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-            Welcome back 👋
+            Welcome back
           </h1>
           <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600 sm:text-base">
-            One overview of everything on your list — your to-dos and all of your
-            group tasks together. Tick them off or delete them here, and add new
-            ones from the To-Do List or Task Groups pages.
+            One overview of everything on your list, your to-dos and all of your
+            group tasks together. Add a to-do right here, tick tasks off, or
+            delete them.
           </p>
 
           <div className="mt-6 flex flex-wrap gap-3">
@@ -129,6 +131,18 @@ export default function Dashboard() {
             <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">
               {total} task{total === 1 ? '' : 's'}
             </span>
+          </div>
+
+          <div className="mt-4">
+            <TaskForm
+              onAdd={addTodo}
+              placeholder="Add a to-do..."
+              buttonLabel="Add"
+            />
+            <p className="mt-2 text-xs text-slate-400">
+              This adds a standalone to-do. To add a task inside a group, open
+              that group on the Task Groups page.
+            </p>
           </div>
 
           <div className="mt-4">
